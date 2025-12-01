@@ -37,8 +37,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           USER_AGENT: ${{ secrets.USER_AGENT }}
         timeout-minutes: 10
-        run: |
-          python app.py
-        with:
-          name: screenshot
-          path: screen.png
+        run: python app.py

@@ -29,6 +29,7 @@ jobs:
 
       - name: Executar script Python
         env:
+          URL: ${{ secrets.URL }}
           URL_API: ${{ secrets.URL_API }}
           URL_APP: ${{ secrets.URL_APP }}
           URL_X: ${{ secrets.URL_X }}

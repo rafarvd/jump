@@ -1,33 +1,33 @@
-name: Python
+name: Python Safe Bot
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 */12 * * *"
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: "0 */12 * * *" # Executa a cada 12 horas
-  workflow_dispatch:
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - name: Checkout código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configurar Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
-      - name: Instalar dependências do Python
+      - name: Instalar dependências
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install --upgrade pip --quiet
+          if [ -f requirements.txt ]; then pip install -r requirements.txt --quiet; fi
 
-      - name: Executar script Python
+      - name: Executar script Python (modo silencioso)
         env:
           URL_API: ${{ secrets.URL_API }}
           URL_APP: ${{ secrets.URL_APP }}
@@ -36,11 +36,9 @@ jobs:
           USER_ID: ${{ secrets.USER_ID }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           USER_AGENT: ${{ secrets.USER_AGENT }}
-        run: python app.py
-        
-      - name: Fazer upload da captura de tela
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
+        timeout-minutes: 10
+        run: |
+          python app.py
         with:
           name: screenshot
           path: screen.png

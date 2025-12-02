@@ -43,8 +43,9 @@ for token in tokens:
                 # claim.json()['data']['total'] = ""
                 break
             i += 1
-        balance.json()['data']['total'] = ""
+        balance.json().balance["data"].pop("total", None)
         print(f"{claim.json()} | {balance.json()['data']['total']}")
     else:
         print("Erro ao acessar a API")
+
 

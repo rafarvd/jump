@@ -39,14 +39,12 @@ for token in tokens:
             sleep(5)
             claim = requests.post(f"{url}/accounting/device-share-rewards", headers=headers, json=data)
             if claim.json().get("title") is None:
-                # claim.json().get("user_id") = ""
-                # claim.json()['data']['total'] = ""
                 break
             i += 1
-        balance.json()['data']['total'] = ""
         print(f"{claim.json()} | {balance.json()['data']['total']}")
     else:
         print("Erro ao acessar a API")
+
 
 
 
